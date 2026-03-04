@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X Blocked - Take a Break</title>
+    <link rel="stylesheet" href="blocked.css">
+</head>
+
+<body>
+    <div class="blocked-container">
+        <div class="glow-orb"></div>
+
+        <div class="content">
+            <div class="icon-block">
+                <div class="x-mark">𝕏</div>
+                <div class="slash"></div>
+            </div>
+
+            <h1 class="title" id="block-title">Time's Up!</h1>
+            <p class="subtitle" id="block-subtitle">You've used your 1 minute on X for this hour.</p>
+
+            <div class="reset-card">
+                <div class="reset-label" id="reset-label">Access resets in</div>
+                <div class="reset-time" id="reset-countdown">--:--</div>
+            </div>
+
+            <div class="quotes">
+                <p class="quote" id="quote-text">"The key is not to prioritize what's on your schedule, but to schedule
+                    your priorities."</p>
+                <p class="quote-author" id="quote-author">— Stephen Covey</p>
+            </div>
+
+            <div class="suggestions">
+                <div class="suggestion-title">Instead, try:</div>
+                <div class="suggestion-grid">
+                    <div class="suggestion-item">📖 Read a book</div>
+                    <div class="suggestion-item">🏃 Go for a walk</div>
+                    <div class="suggestion-item">💻 Work on a project</div>
+                    <div class="suggestion-item">🧘 Meditate</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quotes = [
+            { text: "The key is not to prioritize what's on your schedule, but to schedule your priorities.", author: "Stephen Covey" },
+            { text: "Almost everything will work again if you unplug it for a few minutes... including you.", author: "Anne Lamott" },
+            { text: "Your focus determines your reality.", author: "George Lucas" },
+            { text: "The successful warrior is the average man, with laser-like focus.", author: "Bruce Lee" },
+            { text: "It is not enough to be busy. The question is: what are we busy about?", author: "Henry David Thoreau" },
+            { text: "You will never reach your destination if you stop and throw stones at every dog that barks.", author: "Winston Churchill" },
+        ];
+
+        // Random quote
+        const q = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById("quote-text").textContent = `"${q.text}"`;
+        document.getElementById("quote-author").textContent = `— ${q.author}`;
+
+        // Determine block reason from URL
+        const params = new URLSearchParams(window.location.search);
+        const reason = params.get("reason") || "usage_limit";
+
+        if (reason === "time_window") {
+            document.getElementById("block-title").textContent = "Not Now!";
+            document.getElementById("block-subtitle").textContent =
+                "X is only available between 2:00 PM and 9:00 PM.";
+            document.getElementById("reset-label").textContent = "Access opens in";
+            // Change glow to a cooler color
+            document.querySelector(".glow-orb").style.background =
+                "radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, rgba(99, 102, 241, 0.04) 40%, transparent 70%)";
+        }
+
+        // Countdown to reset
+        function updateCountdown() {
+            browser.runtime.sendMessage({ type: "GET_STATUS" }).then((response) => {
+                if (!response) return;
+
+                let targetTime;
+                let diff;
+
+                if (reason === "time_window" || !response.isWithinAllowedHours) {
+                    // Show countdown until the allowed window opens
+                    targetTime = response.nextAllowedTime || 0;
+                    diff = Math.max(0, Math.floor((targetTime - Date.now()) / 1000));
+
+                    // Format as hours:minutes:seconds for longer waits
+                    const h = Math.floor(diff / 3600);
+                    const m = Math.floor((diff % 3600) / 60);
+                    const s = diff % 60;
+
+                    if (h > 0) {
+                        document.getElementById("reset-countdown").textContent =
+                            `${h}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+                    } else {
+                        document.getElementById("reset-countdown").textContent =
+                            `${m}:${String(s).padStart(2, "0")}`;
+                    }
+                } else {
+                    // Usage limit — countdown to next hour reset
+                    diff = Math.max(0, Math.floor((response.nextReset - Date.now()) / 1000));
+                    const m = Math.floor(diff / 60);
+                    const s = diff % 60;
+                    document.getElementById("reset-countdown").textContent =
+                        `${m}:${String(s).padStart(2, "0")}`;
+                }
+
+                // If unblocked, redirect back
+                if (diff <= 0 && !response.isBlocked) {
+                    window.location.href = "https://x.com";
+                }
+            }).catch(() => { });
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+
+</html>

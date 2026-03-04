@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X Blocker</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div class="popup-container">
+    <div class="header">
+      <div class="logo">𝕏</div>
+      <div class="title">Blocker</div>
+    </div>
+
+    <div class="ring-container">
+      <svg class="progress-ring" viewBox="0 0 120 120">
+        <circle class="progress-ring__bg" cx="60" cy="60" r="52" />
+        <circle class="progress-ring__fill" cx="60" cy="60" r="52" id="progress-fill" />
+      </svg>
+      <div class="ring-text">
+        <div class="ring-time" id="ring-time">1:00</div>
+        <div class="ring-label">left</div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" id="stat-used">0s</div>
+        <div class="stat-label">Used</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <div class="stat-value" id="stat-reset">--:--</div>
+        <div class="stat-label">Resets at</div>
+      </div>
+    </div>
+
+    <div class="window-bar">
+      <span class="window-icon">🕐</span>
+      <span class="window-label">Window:</span>
+      <span class="window-value" id="time-window">2 PM – 9 PM</span>
+    </div>
+
+    <div class="status-bar" id="status-bar">
+      <span class="status-dot"></span>
+      <span class="status-text" id="status-text">Monitoring</span>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>

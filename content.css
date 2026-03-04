@@ -1,0 +1,86 @@
+/* X Blocker - Content Script Overlay Styles */
+
+#xblocker-overlay {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 50px;
+  background: rgba(15, 15, 15, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  cursor: grab;
+  user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+#xblocker-overlay:hover {
+  transform: scale(1.03);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+#xblocker-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+#xblocker-time {
+  font-size: 18px;
+  font-weight: 700;
+  color: #4ade80;
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
+  min-width: 36px;
+  text-align: center;
+}
+
+#xblocker-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Warning State (< 15s) */
+#xblocker-overlay.xblocker-warning {
+  background: rgba(127, 29, 29, 0.9);
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow:
+    0 8px 32px rgba(239, 68, 68, 0.3),
+    0 0 0 1px rgba(239, 68, 68, 0.2) inset;
+}
+
+#xblocker-overlay.xblocker-warning #xblocker-time {
+  color: #fca5a5;
+}
+
+/* Blocked State */
+#xblocker-overlay.xblocker-blocked {
+  background: rgba(127, 29, 29, 0.95);
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+#xblocker-overlay.xblocker-blocked #xblocker-time {
+  color: #ef4444;
+}
+
+/* Pulse animation for warning */
+@keyframes xblocker-pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
