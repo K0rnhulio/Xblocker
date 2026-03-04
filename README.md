@@ -5,7 +5,8 @@ A Mozilla / Zen browser extension that limits your **X.com (Twitter)** usage to 
 ## Features
 
 - ⏱ **1 minute per hour limit** — total time across multiple visits
-- 🔢 **Floating timer overlay** — shows remaining time directly on X.com
+- � **Time Window Restrictions** — access is only allowed between 2 PM and 9 PM
+- �🔢 **Floating timer overlay** — shows remaining time directly on X.com
 - 📊 **Popup dashboard** — circular progress ring with usage stats
 - 🚫 **Blocked page** — clean page with reset countdown & motivational quotes
 - 🔄 **Multiple visits allowed** — 5×12s, 3×20s, or any combo that totals 60s
